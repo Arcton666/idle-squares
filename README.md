@@ -9,9 +9,14 @@ This is my very first project I have published to GitHub (my friend told me to p
 I'm still learning back-end coding. Data is stored in JSON files as of now, and my plan is to set up a proper database. 
 This project is for learning, it wouldn't be wise to publish the back-end side of things if i would want this to be a real browser game.
 
+## Tech used
+- Node.js / Express
+- JSON files for data storage
+- AI[Claude] for back-end learning
+
 ## How to run it
 
-- Clone the repo: [ git clone https://github.com/YOUR-USERNAME/YOUR-REPO.git ]
+- Clone the repo: [ git clone https://github.com/Arcton666/idle-squares.git ]
 - Install dependencies: [ npm install ]
 - Start the app: [ npm start ]
 - Open [ http://localhost:6661 ] in your browser
