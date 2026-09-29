@@ -10,9 +10,12 @@ I'm still learning back-end coding. Data is stored in JSON files as of now, and 
 This project is for learning, it wouldn't be wise to publish the back-end side of things if i would want this to be a real browser game.
 
 ## Tech used
-- Node.js / Express
+- Node.js (v22) / Express
 - JSON files for data storage
 - AI[Claude] for back-end learning
+
+## Requirements
+- Node.js (LTS), download from from https://nodejs.org
 
 ## How to run it
 
