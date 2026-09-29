@@ -16,7 +16,9 @@ This project is for learning, it wouldn't be wise to publish the back-end side o
 
 ## How to run it
 
+- Open a terminal somewhere
 - Clone the repo: [ git clone https://github.com/Arcton666/idle-squares.git ]
+- Move into installed directory: [ cd idle-squares ]
 - Install dependencies: [ npm install ]
 - Start the app: [ npm start ]
 - Open [ http://localhost:6661 ] in your browser
