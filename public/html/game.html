@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="../styles/main.css">
+        <link rel="stylesheet" href="../styles/game/game.css">
+        <link rel="stylesheet" href="../styles/game/header.css">
+        <link rel="stylesheet" href="../styles/game/sidebar.css">
+        <link rel="stylesheet" href="../styles/game/gamespace.css">
+        <link rel="stylesheet" href="../styles/game/menu.css">
+        
+        <title>Idle Squares</title>
+    </head>
+    <body>
+
+        <div id="div-game">
+            <div class="div-layout" id="div-sidebar">
+                <div class="div-layout-sidebar" id="temp">
+                    <button class="button-menu" id="btn-stats">
+                        <div class="div-button-image" id="div-btn-stats"></div>
+                    </button>
+                    <button class="button-menu" id="btn-info">
+                        <div class="div-button-image" id="div-btn-info"></div>
+                    </button>
+                    <button class="button-menu" id="btn-settings">
+                        <div class="div-button-image" id="div-btn-settings"></div>
+                    </button>
+                </div>
+            </div>
+            <div id="div-content">
+                <div class="div-layout" id="div-header">
+                </div>
+                <div class="div-layout" id="div-gamespace">
+                    <div id="div-slots"></div>
+                </div>
+                <div class="div-layout" id="div-menu">
+                    <button id="btn-test">Get data</button>
+                </div>
+            </div>
+        </div>
+    
+        <script src="../scripts/game.js"></script>
+    </body>
+</html>

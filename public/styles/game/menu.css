@@ -1,0 +1,4 @@
+#div-menu{
+    border-top: var(--layout-bw) solid var(--layout-bc);
+    border-bottom-right-radius: var(--game-br);
+}

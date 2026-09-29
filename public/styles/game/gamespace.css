@@ -1,0 +1,51 @@
+#div-gamespace{
+    display: flexbox;
+    background-color: transparent !important;
+}
+#div-slots{
+    display: flex;
+    flex-wrap: wrap;
+
+    background-color: red;
+     color: black;
+
+    /*height: 100%;*/
+}
+#slot1, #slot2{
+    background-color: blue;
+
+    height: 100px;
+    width: 100px;
+}
+.div-slot-text{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border: 1px solid black;
+}
+.text-slot-level{
+    font-size: 17px;
+}
+.text-slot-earning{
+    font-size: auto;
+}
+.text-slot-upgrade{
+    font-size: 14px;
+}
+.slot{
+    display: grid;
+    grid-template-rows: 20px auto 20px;
+    justify-content: center;
+
+    height: 100px;
+    width: 100px;
+
+    background-color: white;
+    border: 1px solid lime;
+}
+.slot-locked{
+    background-color: purple;
+    height: 100px;
+    width: 100px;
+}

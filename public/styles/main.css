@@ -1,0 +1,45 @@
+:root{
+    /* ===== GAME ===== */
+    --layout-bw: 2px;
+    --layout-bc: white;
+    --layout-bg: rgba(0,0,0,0.5);
+
+    --game-margin: 50px;
+    --game-br: 15px;
+    --game-grad-1: rgb(154, 8, 8);
+    --game-grad-2: rgb(163, 29, 107);
+    --game-grad-3: rgb(54, 19, 103);
+
+    --sidebar-width: 200px;
+    --sidebar-margin: 10px;
+
+    --header-height: 35px;
+
+    --menu-height: 300px;
+
+    --button-bw: 3px;
+    --button-bc: black;
+    --button-bc-hover: white;
+    --button-br: 10px;
+    --button-image-size: 80%;
+
+    /* ===== DARK ===== */
+    --background-dark: #111;
+    --color-dark: rgb(203, 203, 203);
+
+    /* ===== LIGHT ===== */
+    --background-light: rgb(203, 203, 203);
+    --color-light: #111;
+}
+
+body{
+    font-family: sans-serif;
+    font-size: 28px;
+
+    background-color: black;
+    color: lime;
+}
+
+.title-big{
+    font-size: 60px;
+}

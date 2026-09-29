@@ -1,0 +1,4 @@
+#div-header{
+    border-bottom: var(--layout-bw) solid var(--layout-bc);
+    border-top-right-radius: var(--game-br);
+}
