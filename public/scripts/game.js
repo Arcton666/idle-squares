@@ -39,31 +39,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // create section
     const sectionBox = document.getElementById("div-slots");
-    let identifier = 1;
+    let identifier = 0;
     async function CreateSection(){
-        /*
-        let slotDatabase;
-        try{
-            slotDatabase = await fetchData("/database/read/slots");
-        }
-        catch(e){
-            throw new Error(e)
-        }
-        */
-
-        // creating new slot data
+        identifier++;
+        // ===== creating new slot data ===== //
         const slot = `slot${identifier}`
         const newSlot = {
             key: slot,
             value: {
                 level: 1,
                 earning: 1,
-                upgrade: 10000000
+                upgrade: 100
             }
         };
-        identifier++;
 
-        // writing data
+        // writing new slot data into slots database
         let res;
         try{
             res = await fetch("/database/write/slots", {
@@ -76,11 +66,23 @@ document.addEventListener("DOMContentLoaded", () => {
             throw new Error(e);
         }
         if(!res.ok){
-            console.error(res);
-            throw new Error("Failed to fetch url.");
+            console.warn(res);
+            return console.error("Failed to fetch url.");
         }
 
-        /*
+        // ===== creating slot divs ===== //
+        let slotDatabase;
+        try{
+            slotDatabase = await fetchData("/database/read/slots");
+        }
+        catch(e){
+            throw new Error(e)
+        }
+
+        if(slotDatabase === undefined){
+            throw new Error("Database undefined");
+        }
+
         let slotLevel = 0;
         let slotEarning = 0;
         let slotUpgrade = 0;
@@ -93,8 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error(slotDatabase);
             throw new Error(`${slot} does not exist in database`, e);
         }
-        
-        
+
         const slotLevelText = `Level: ${slotLevel}`;
         const slotEarningText = `$${slotEarning}`;
         const slotUpgradeText = `Upgrade: $${slotUpgrade}`;
@@ -141,8 +142,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        identifier++;
-
         // debug outputs
         console.log("Section created successfully");
         console.log("ID:", section.id);
@@ -151,8 +150,20 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("E:", slotEarning);
         console.log("U", slotUpgrade)
         console.log("==========");
-        */
+
     }
+
+    // Create the very first section
+    CreateSection();
+
+    // CREATE MORE
+    CreateSection();
+    CreateSection();
+    CreateSection();
+    CreateSection();
+    CreateSection();
+    CreateSection();
+    CreateSection();
     CreateSection();
     CreateSection();
     CreateSection();

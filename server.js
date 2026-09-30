@@ -5,6 +5,9 @@ const {readDatabase, writeData, wipeData, dataPathTemp} = require("./dataHandler
 const app = express();
 const PORT = 6661;
 
+// databases
+const databaseSlots = path.join(__dirname, "data/slots.json");
+
 // serving frontend files
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -27,16 +30,14 @@ app.get("/database/read/temp", async (req, res) => {
         return res.status(500).json({origin: "server.js", error: e.message});
     }
 })
-const databaseSlots = path.join(__dirname, "data/slots.json");
 app.get("/database/read/slots", async (req, res) => {
     try{
         const data = await readDatabase(databaseSlots);
-        if(data !== null && data !== false){
-            return res.json(data);
-        }
-        else{
+        if(data === null || data === false || data === undefined){
             return res.status(500).json({origin: "server.js", error: "Unable to read database [slots.json]"})
         }
+        
+        return res.json(data);
     }
     catch(e){
         return res.status(500).json({origin: "server.js", error: e.message});
@@ -45,26 +46,20 @@ app.get("/database/read/slots", async (req, res) => {
 
 // post requests
 app.post("/database/write/slots", async (req, res) => {
-    try{
-        console.log("(server.js) Recieved data: ", req.body);
+    console.log("(server.js) Recieved data: ", req.body);
 
-        const {key, value} = req.body;
-
-        if(!key || !value){
-            return res.status(400).json({origin: "server.js", error: "Invalid data format"});
-        }
+    const {key, value} = req.body;
+    if(key === undefined || value === undefined){
+        return res.status(400).json({origin: "server.js", error: "Invalid data format"});
+    }
         
-
-        const success = await writeData(key, value, databaseSlots);
-        if(success){
-            res.status(200).json({origin: "server.js", message: "Data writed to database successfully", data: key});
-        }
-        else{
-            res.status(500).json({origin: "server.js", error: "Failed to write data."}) 
-        }  
+    try{
+        await writeData(key, value, databaseSlots);
+        res.status(200).json({origin: "server.js", message: "Data writed to database successfully", data: key});
     }
     catch(e){
-        res.status(500).json({origin: "server.js", error: e});
+        console.error("(server.js) Could not write data:", e);
+        return res.status(500).json({origin: "server.js", error: "Could not write data."})
     }
 })
 
