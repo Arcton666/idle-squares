@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     /*
         DO THIS SOMEDAY
         ## auto scale font sizes when things update in the slots
@@ -49,7 +49,8 @@ document.addEventListener("DOMContentLoaded", () => {
             value: {
                 level: 1,
                 earning: 1,
-                upgrade: 100
+                upgrade: 100,
+                update: 1000
             }
         };
 
@@ -142,6 +143,9 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
+        // assign unique(lol) updater
+        UpdateSlot(identifier);
+
         // debug outputs
         console.log("Section created successfully");
         console.log("ID:", section.id);
@@ -153,21 +157,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }
 
-    // Create the very first section
-    CreateSection();
+    async function UpdateSlot(slotId){
+        // increment valye by the slot's earning
 
-    // CREATE MORE
-    CreateSection();
-    CreateSection();
-    CreateSection();
-    CreateSection();
-    CreateSection();
-    CreateSection();
-    CreateSection();
-    CreateSection();
-    CreateSection();
-    CreateSection();
-    CreateSection();
+        let slotDatabase;
+        try{
+            slotDatabase = await fetchData("/database/read/slots");
+        }
+        catch(e){
+            throw new Error(e)
+        }
+
+        const slotText = document.getElementById(`text-slot-earning-${slotId}`)
+        const slotEarning = slotDatabase[`slot${slotId}`].earning;
+        let earning = slotEarning;
+        const updateTimer = slotDatabase[`slot${slotId}`].update;
+
+        setInterval(() => {
+            
+            slotText.innerHTML = `$${earning += 1}`
+        }, updateTimer);
+    }
+
+    // Create the very first section
+    await CreateSection();
+    await CreateSection();
+    await CreateSection();
+    await CreateSection();
 
     document.getElementById("btn-test").addEventListener("click", async () => {
         try{

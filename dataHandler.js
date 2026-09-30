@@ -35,9 +35,6 @@ async function writeFileData(data, database){
         return handleError(e);
     }
 }
-async function writeDataNow(objectKey, dataObject, database){
-    
-}
 
 // ===== public functions ===== //
 let reading = false;
