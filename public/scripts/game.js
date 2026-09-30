@@ -41,10 +41,63 @@ document.addEventListener("DOMContentLoaded", () => {
     const sectionBox = document.getElementById("div-slots");
     let identifier = 1;
     async function CreateSection(){
-        const slotDatabase = await fetchData("/database/read/slots");
-        const slotLevel = slotDatabase.slot1.level;
-        const slotEarning = slotDatabase.slot1.earning;
-        const slotUpgrade = slotDatabase.slot1.upgrade;
+        /*
+        let slotDatabase;
+        try{
+            slotDatabase = await fetchData("/database/read/slots");
+        }
+        catch(e){
+            throw new Error(e)
+        }
+        */
+
+        // creating new slot data
+        const slot = `slot${identifier}`
+        const newSlot = {
+            key: slot,
+            value: {
+                level: 1,
+                earning: 1,
+                upgrade: 10000000
+            }
+        };
+        identifier++;
+
+        // writing data
+        let res;
+        try{
+            res = await fetch("/database/write/slots", {
+                method: "POST",
+                headers: {"Content-Type" : "application/json"},
+                body: JSON.stringify(newSlot)
+            });
+        }
+        catch(e){
+            throw new Error(e);
+        }
+        if(!res.ok){
+            console.error(res);
+            throw new Error("Failed to fetch url.");
+        }
+
+        /*
+        let slotLevel = 0;
+        let slotEarning = 0;
+        let slotUpgrade = 0;
+        try{
+            slotLevel = slotDatabase[slot].level;
+            slotEarning = slotDatabase[slot].earning;
+            slotUpgrade = slotDatabase[slot].upgrade;
+        }
+        catch(e){
+            console.error(slotDatabase);
+            throw new Error(`${slot} does not exist in database`, e);
+        }
+        
+        
+        const slotLevelText = `Level: ${slotLevel}`;
+        const slotEarningText = `$${slotEarning}`;
+        const slotUpgradeText = `Upgrade: $${slotUpgrade}`;
 
         // main slot div
         const section = document.createElement("div");
@@ -56,17 +109,17 @@ document.addEventListener("DOMContentLoaded", () => {
         const sectionTextSlotLevel = document.createElement("text");
         sectionTextSlotLevel.className = "text-slot-level";
         sectionTextSlotLevel.id = `text-slot-level-${identifier}`;
-        sectionTextSlotLevel.innerHTML = `Level: ${slotLevel}`;
+        sectionTextSlotLevel.innerHTML = slotLevelText;
 
         const sectionTextSlotEarning = document.createElement("text");
         sectionTextSlotEarning.className = "text-slot-earning";
         sectionTextSlotEarning.id = `text-slot-earning-${identifier}`
-        sectionTextSlotEarning.innerHTML = `$${slotEarning}`;
+        sectionTextSlotEarning.innerHTML = slotEarningText;
 
         const sectionTextSlotUpgrade = document.createElement("text");
         sectionTextSlotUpgrade.className = "text-slot-upgrade";
         sectionTextSlotUpgrade.id = `text-slot-upgrade-${identifier}`;
-        sectionTextSlotUpgrade.innerHTML = `Upgrade: $${slotUpgrade}`;
+        sectionTextSlotUpgrade.innerHTML = slotUpgradeText;
 
         // divs for slot texts
         for(let i = 0; i < 3; i++){
@@ -98,6 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("E:", slotEarning);
         console.log("U", slotUpgrade)
         console.log("==========");
+        */
     }
     CreateSection();
     CreateSection();
