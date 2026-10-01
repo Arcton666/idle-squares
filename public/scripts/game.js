@@ -28,6 +28,34 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
+    // get slot data
+    function getSlotData(database, slotId){
+        const slotLevel = database[`slot${slotId}`].level;
+        const slotEarning = database[`slot${slotId}`].earning;
+        const slotEarned = database[`slot${slotId}`].earned;
+        const slotUpgrade = database[`slot${slotId}`].upgrade;
+        const slotUpdate = database[`slot${slotId}`].update;
+
+        const slotData = [slotLevel, slotEarning, slotEarned, slotUpgrade, slotUpdate];
+
+        return slotData;
+    }
+
+    function setSlotData(slotId, level, earning, earned, upgrade, update){
+        const slot = {
+            key: `slot${slotId}`,
+            value: {
+                level: level,
+                earning: earning,
+                earned: earned,
+                upgrade: upgrade,
+                update: update
+            }
+        }
+
+        return slot;
+    }
+
     // auto-scale slot font
     function autoScaleFont(number, object, baseFontSize){
         // base string: Upgrade: $ 
@@ -79,33 +107,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         // ===== creating slot divs ===== //
-        let slotDatabase;
-        try{
-            slotDatabase = await fetchData("/database/read/slots");
-        }
-        catch(e){
-            throw new Error(e)
-        }
-
-        if(slotDatabase === undefined){
-            throw new Error("Database undefined");
-        }
-
-        /*
-        let slotLevel = 0;
-        let slotEarning = 0;
-        let slotUpgrade = 0;
-        try{
-            slotLevel = slotDatabase[slot].level;
-            slotEarning = slotDatabase[slot].earning;
-            slotUpgrade = slotDatabase[slot].upgrade;
-        }
-        catch(e){
-            console.error(slotDatabase);
-            throw new Error(`${slot} does not exist in database`, e);
-        }
-        */
-
         const slotLevelText = `Level: ${defaultSlotLevel}`;
         const slotEarningText = `$0`;
         const slotUpgradeText = `Upgrade: $${defaultSlotUpgrade}`;
@@ -116,7 +117,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         section.id = `slot-${identifier}`;
         sectionBox.appendChild(section);
 
-        // slot texts [level, earning, upgrade]
+        // slot texts [level, earning]
         const sectionTextSlotLevel = document.createElement("text");
         sectionTextSlotLevel.className = "text-slot-level";
         sectionTextSlotLevel.id = `text-slot-level-${identifier}`;
@@ -127,10 +128,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         sectionTextSlotEarning.id = `text-slot-earning-${identifier}`
         sectionTextSlotEarning.innerHTML = slotEarningText;
 
-        const sectionTextSlotUpgrade = document.createElement("text");
-        sectionTextSlotUpgrade.className = "text-slot-upgrade";
-        sectionTextSlotUpgrade.id = `text-slot-upgrade-${identifier}`;
-        sectionTextSlotUpgrade.innerHTML = slotUpgradeText;
+        // slot button [upgrade]
+        const btnSlotUpgrade = document.createElement("button");
+        btnSlotUpgrade.className = "button-slot-upgrade";
+        btnSlotUpgrade.id = `button-slot-upgrade-${identifier}`;
+        btnSlotUpgrade.innerHTML = slotUpgradeText;
 
         // divs for slot texts
         for(let i = 0; i < 3; i++){
@@ -145,7 +147,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 sectionDivSlotText.appendChild(sectionTextSlotEarning);
             }
             else if(i == 2){
-                sectionDivSlotText.appendChild(sectionTextSlotUpgrade);
+                sectionDivSlotText.appendChild(btnSlotUpgrade);
             }
             else{
                 console.warn("increment overflow");
@@ -158,7 +160,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         // debug outputs
         console.log("Section created successfully");
         console.log("ID:", section.id);
-        console.log("Data:", slotDatabase);
+        //console.log("Data:", slotDatabase);
         console.log("L:", defaultSlotLevel);
         console.log("E:", defaultSlotEarning);
         console.log("U", defaultSlotUpgrade);
@@ -168,7 +170,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     async function UpdateSlot(slotId){
-        // increment valye by the slot's earning
+        // increment earned value by the slot's earning
         // fetch every data
         // update every data
         // not efficient but good enough for now
@@ -178,7 +180,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             slotDatabase = await fetchData("/database/read/slots");
         }
         catch(e){
-            throw new Error(e)
+            return console.error("[ Couldn't fetch data for updating ]", e);
         }
         const slotLevel = slotDatabase[`slot${slotId}`].level;
         let slotEarning = slotDatabase[`slot${slotId}`].earning;
@@ -188,12 +190,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         const slotText = document.getElementById(`text-slot-earning-${slotId}`)
         let earned = slotEarned;
+
         setInterval(async () => {
-            slotEarning = slotDatabase[`slot${slotId}`].earning; // refreshing
+            slotEarning = slotDatabase[`slot${slotId}`].earning; // refreshing (in case upgrade happens)
             earned += slotEarning
             
             slotText.innerHTML = `$${earned}`
 
+            // prepare slot for update
             const updatedSlot = {
                 key: `slot${slotId}`,
                 value: {
@@ -205,7 +209,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 }
             }
 
-            // write the updated data to the slot
+            // update slot
             let res;
             try{
                 res = await fetch("/database/write/slots", {
@@ -215,17 +219,60 @@ document.addEventListener("DOMContentLoaded", async () => {
                 })
             }
             catch(e){
-                throw new Error(e);
+                return console.error("[ Failed to update slot ]", e)
             }
         }, slotUpdate);
     }
 
     // Create the very first section
     await CreateSection();
-    await CreateSection();
-    await CreateSection();
-    await CreateSection();
+    
+    Array.from(document.getElementsByClassName("button-slot-upgrade")).forEach(button => {
 
+        //
+        const money = 100; // FOR DEBUGGING ONLY
+        const earningConstant = 10;
+        //
+
+        button.addEventListener("click", async () => {
+            const btnId = Number(button.id.match(/\d+/)[0]); // made with ai, its strange, i dont understand it, i just need the ID number man
+
+            let slotDatabase;
+            try{
+                slotDatabase = await fetchData("/database/read/slots")
+            }
+            catch(e){
+                return console.error("[ Couldn't fetch data for upgrading ]", e);
+            }
+
+            const slotData = getSlotData(slotDatabase, btnId);
+            
+            if(money < slotData[3]){
+                return console.warn("Not enough money to upgrade");
+            }
+
+            const upgradedEarning = slotData[0] * earningConstant;
+            const upgradedUpgrade = slotData[3] * earningConstant;
+
+            const upgradedSlot = setSlotData(btnId, slotData[0], upgradedEarning, slotData[2], upgradedUpgrade, slotData[4]);
+
+            let res;
+            try{
+                res = await fetch("/database/write/slots", {
+                    method: "POST",
+                    headers: {"Content-Type" : "application/json"},
+                    body: JSON.stringify(upgradedSlot)
+                })
+            }
+            catch(e){
+                return console.error("[ Failed to upgrade slot ]", e);
+            }
+
+            UpdateSlot(btnId);
+        })
+    })
+
+    // tmeporal button
     document.getElementById("btn-test").addEventListener("click", async () => {
         try{
             const res = await fetch("/database/read/temp");

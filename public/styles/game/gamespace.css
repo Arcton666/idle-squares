@@ -30,8 +30,19 @@
 .text-slot-earning{
     font-size: auto;
 }
-.text-slot-upgrade{
-    font-size: 14px;
+.button-slot-upgrade{
+    transition: 0.1s;
+
+    font-size: 13px;
+    background-color: var(--slot-button-bc);
+    border: none;
+    height: 100%;
+}
+.button-slot-upgrade:hover{
+    transition: 0.1s;
+    
+    cursor: pointer;
+    background-color: var(--slot-button-bc-hover);
 }
 .slot{
     display: grid;

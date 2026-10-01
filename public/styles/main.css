@@ -23,6 +23,9 @@
     --button-br: 10px;
     --button-image-size: 80%;
 
+    --slot-button-bc: transparent;
+    --slot-button-bc-hover: rgba(0,0,0,0.3);
+
     /* ===== DARK ===== */
     --background-dark: #111;
     --color-dark: rgb(203, 203, 203);
