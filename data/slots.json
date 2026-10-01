@@ -2,24 +2,28 @@
     "slot1": {
         "level": 1,
         "earning": 1,
+        "earned": 14,
         "upgrade": 100,
         "update": 1000
     },
     "slot2": {
         "level": 1,
         "earning": 1,
+        "earned": 14,
         "upgrade": 100,
         "update": 1000
     },
     "slot3": {
         "level": 1,
         "earning": 1,
+        "earned": 14,
         "upgrade": 100,
         "update": 1000
     },
     "slot4": {
         "level": 1,
         "earning": 1,
+        "earned": 14,
         "upgrade": 100,
         "update": 1000
     }

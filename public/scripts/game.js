@@ -43,14 +43,21 @@ document.addEventListener("DOMContentLoaded", async () => {
     async function CreateSection(){
         identifier++;
         // ===== creating new slot data ===== //
+        const defaultSlotLevel = 1;
+        const defaultSlotEarning = 1;
+        const defaultSlotEarned = 0;
+        const defaultSlotUpgrade = 100;
+        const defaultSlotUpdate = 1000; // NEVER change this to below 10 under ANY circumstance
+
         const slot = `slot${identifier}`
         const newSlot = {
             key: slot,
             value: {
-                level: 1,
-                earning: 1,
-                upgrade: 100,
-                update: 1000
+                level: defaultSlotLevel,
+                earning: defaultSlotEarning,
+                earned: defaultSlotEarned,
+                upgrade: defaultSlotUpgrade,
+                update: defaultSlotUpdate
             }
         };
 
@@ -84,6 +91,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             throw new Error("Database undefined");
         }
 
+        /*
         let slotLevel = 0;
         let slotEarning = 0;
         let slotUpgrade = 0;
@@ -96,10 +104,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             console.error(slotDatabase);
             throw new Error(`${slot} does not exist in database`, e);
         }
+        */
 
-        const slotLevelText = `Level: ${slotLevel}`;
-        const slotEarningText = `$${slotEarning}`;
-        const slotUpgradeText = `Upgrade: $${slotUpgrade}`;
+        const slotLevelText = `Level: ${defaultSlotLevel}`;
+        const slotEarningText = `$0`;
+        const slotUpgradeText = `Upgrade: $${defaultSlotUpgrade}`;
 
         // main slot div
         const section = document.createElement("div");
@@ -150,15 +159,19 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.log("Section created successfully");
         console.log("ID:", section.id);
         console.log("Data:", slotDatabase);
-        console.log("L:", slotLevel);
-        console.log("E:", slotEarning);
-        console.log("U", slotUpgrade)
+        console.log("L:", defaultSlotLevel);
+        console.log("E:", defaultSlotEarning);
+        console.log("U", defaultSlotUpgrade);
+        console.log("U2", defaultSlotUpdate);
         console.log("==========");
 
     }
 
     async function UpdateSlot(slotId){
         // increment valye by the slot's earning
+        // fetch every data
+        // update every data
+        // not efficient but good enough for now
 
         let slotDatabase;
         try{
@@ -167,16 +180,44 @@ document.addEventListener("DOMContentLoaded", async () => {
         catch(e){
             throw new Error(e)
         }
+        const slotLevel = slotDatabase[`slot${slotId}`].level;
+        let slotEarning = slotDatabase[`slot${slotId}`].earning;
+        let slotEarned = slotDatabase[`slot${slotId}`].earned;
+        const slotUpgrade = slotDatabase[`slot${slotId}`].upgrade;
+        const slotUpdate = slotDatabase[`slot${slotId}`].update;
 
         const slotText = document.getElementById(`text-slot-earning-${slotId}`)
-        const slotEarning = slotDatabase[`slot${slotId}`].earning;
-        let earning = slotEarning;
-        const updateTimer = slotDatabase[`slot${slotId}`].update;
-
-        setInterval(() => {
+        let earned = slotEarned;
+        setInterval(async () => {
+            slotEarning = slotDatabase[`slot${slotId}`].earning; // refreshing
+            earned += slotEarning
             
-            slotText.innerHTML = `$${earning += 1}`
-        }, updateTimer);
+            slotText.innerHTML = `$${earned}`
+
+            const updatedSlot = {
+                key: `slot${slotId}`,
+                value: {
+                    level: slotLevel,
+                    earning: slotEarning,
+                    earned: earned,
+                    upgrade: slotUpgrade,
+                    update: slotUpdate
+                }
+            }
+
+            // write the updated data to the slot
+            let res;
+            try{
+                res = await fetch("/database/write/slots", {
+                    method: "POST",
+                    headers: {"Content-Type" : "application/json"},
+                    body: JSON.stringify(updatedSlot)
+                })
+            }
+            catch(e){
+                throw new Error(e);
+            }
+        }, slotUpdate);
     }
 
     // Create the very first section
