@@ -101,3 +101,5 @@ async function writeData(objectKey, dataObject, database){
 
 // ===== exports ===== //
 module.exports = {readDatabase, writeData};
+
+// lol
