@@ -4,4 +4,7 @@ fix and finish UpdateSlot() in game.js [COMPLETED]
 
 upgrading isnt working properly, fix that [COMPLETED]
 
-clean up stuff and refine game.js
+clean up stuff and refine game.js [COMPLETED]
+
+when upgrading, decrease the timer on the given slot.
+make the update function use individual slot timers for setInterval

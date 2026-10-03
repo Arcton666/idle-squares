@@ -15,21 +15,6 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 
 // get requests
-const databaseTemp = path.join(__dirname, "data/temp.json")
-app.get("/database/read/temp", async (req, res) => {
-    try{
-        const data = await readDatabase(databaseTemp);
-        if(data !== null && data !== false){
-            return res.json(data);
-        }
-        else{
-            return res.status(500).json({origin: "server.js", error: "Unable to read database [temp.json]"});
-        }
-    }
-    catch(e){
-        return res.status(500).json({origin: "server.js", error: e.message});
-    }
-})
 app.get("/database/read/slots", async (req, res) => {
     try{
         const data = await readDatabase(databaseSlots);
