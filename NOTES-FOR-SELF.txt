@@ -2,4 +2,6 @@ writing data doesnt work properly, fix it [COMPLETED]
 
 fix and finish UpdateSlot() in game.js [COMPLETED]
 
-upgrading isnt working properly, fix that
+upgrading isnt working properly, fix that [COMPLETED]
+
+clean up stuff and refine game.js

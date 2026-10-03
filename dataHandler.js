@@ -65,7 +65,7 @@ async function readDatabase(database){
 let writing = false;
 async function writeData(objectKey, dataObject, database){
     while(writing){
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise(resolve => setTimeout(resolve, 10));
     }
     writing = true;
 
