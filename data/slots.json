@@ -1,1 +1,18 @@
-{}
+{
+    "slot1": {
+        "level": 6,
+        "earning": 51,
+        "earned": 3390,
+        "upgrade": 600,
+        "update": 750,
+        "updater": 9
+    },
+    "slot2": {
+        "level": 1,
+        "earning": 1,
+        "earned": 55,
+        "upgrade": 100,
+        "update": 1000,
+        "updater": 2
+    }
+}
