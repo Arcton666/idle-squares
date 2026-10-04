@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         ];
     }
     function setSlotData(id, l, e, e2, u, u2){
-        const slot = {
+        return {
             key: `slot${id}`,
             value: {
                 level: l,
@@ -30,7 +30,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                 update: u2
             }
         }
-        return slot;
     }
 
     // ===== create slot ===== //
@@ -46,17 +45,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         const defaultSlotUpgrade = 100;
         const defaultSlotUpdate = 1000; // NEVER change this to below 10 under ANY circumstance
         
-        const slot = `slot${identifier}`;
-        const newSlot = {
-            key: slot,
-            value: {
-                level: defaultSlotLevel,
-                earning: defaultSlotEarning,
-                earned: defaultSlotEarned,
-                upgrade: defaultSlotUpgrade,
-                update: defaultSlotUpdate
-            }
-        };
+        const newSlot = setSlotData(
+            identifier,
+            defaultSlotLevel,
+            defaultSlotEarning,
+            defaultSlotEarned,
+            defaultSlotUpgrade,
+            defaultSlotUpdate
+        )
 
         // writing new slot data into slots database
         try{
@@ -73,12 +69,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         catch(e){
             throw new Error(e);
         }
-        /*
-        if(!res.ok){
-            console.warn(res);
-            return console.error("Failed to fetch url. Status code:", res.status);
-        }
-        */
 
         // ===== creating slot divs ===== //
         const slotLevelText = `Level: ${defaultSlotLevel}`;

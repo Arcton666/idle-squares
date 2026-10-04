@@ -6,5 +6,7 @@ upgrading isnt working properly, fix that [COMPLETED]
 
 clean up stuff and refine game.js [COMPLETED]
 
-when upgrading, decrease the timer on the given slot.
-make the update function use individual slot timers for setInterval
+when upgrading, decrease the timer on the given slot. [CANCELLED]
+make the update function use individual slot timers for setInterval [CANCELLED]
+
+overhaul the whole project, introduce OOP
