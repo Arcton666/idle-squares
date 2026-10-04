@@ -9,4 +9,4 @@ clean up stuff and refine game.js [COMPLETED]
 when upgrading, decrease the timer on the given slot. [CANCELLED]
 make the update function use individual slot timers for setInterval [CANCELLED]
 
-overhaul the whole project, introduce OOP
+overhaul the whole project, introduce OOP.
